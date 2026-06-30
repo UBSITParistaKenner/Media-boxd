@@ -1,1 +1,62 @@
-<p>media-form works!</p>
+<div class="dashboard-container">
+  
+    <aside class="sidebar">
+      <h3>{{ editingId() ? 'EDIT MEDIA LOG' : 'LOG NEW MEDIA' }}</h3>
+      
+      <form [formGroup]="mediaForm" (ngSubmit)="onSubmit()">
+        <label>Media Title</label>
+        <input type="text" formControlName="title" placeholder="e.g., Heneral Luna, Secret Door">
+  
+        <label>Creator / Artist / Album</label>
+        <input type="text" formControlName="creator">
+  
+        <label>Media Type</label>
+        <select formControlName="mediaType">
+          <option value="Movie">Movie</option>
+          <option value="Song">Song</option>
+        </select>
+  
+        <label>Volume / Play Count / Times Watched</label>
+        <input type="number" formControlName="count">
+  
+        <label>Overall Verdict</label>
+        <input type="text" formControlName="verdict" placeholder="e.g., Masterpiece, Nostalgic">
+  
+        <label>Detailed Review Notes</label>
+        <textarea formControlName="notes"></textarea>
+  
+        <button type="submit" class="post-btn">
+          {{ editingId() ? 'UPDATE LOG' : 'POST LOG' }}
+        </button>
+        
+        @if (editingId()) {
+          <button type="button" (click)="cancelEdit()" class="cancel-btn">Cancel Edit</button>
+        }
+      </form>
+    </aside>
+  
+    <main class="main-feed">
+      <h2>Personal Media Tracker Profile</h2>
+      <h3>RECENT JOURNAL LOGS</h3>
+  
+      <div class="logs-grid">
+        @for (item of mediaService.mediaList(); track item._id) {
+          <div class="card">
+            <h4>{{ item.title }}</h4>
+            <p class="type-badge">{{ item.mediaType }}</p>
+            <p><strong>By:</strong> {{ item.creator }}</p>
+            <p><strong>Verdict:</strong> {{ item.verdict }}</p>
+            <p><strong>Count/Plays:</strong> {{ item.count }}</p>
+            <p class="notes">"{{ item.notes }}"</p>
+            
+            <div class="actions">
+              <button (click)="startEdit(item)" class="edit-btn">Edit</button>
+              <button (click)="deleteItem(item._id)" class="delete-btn">Delete</button>
+            </div>
+          </div>
+        } @empty {
+          <p>No logged items yet. Use the sidebar to create one!</p>
+        }
+      </div>
+    </main>
+  </div>
