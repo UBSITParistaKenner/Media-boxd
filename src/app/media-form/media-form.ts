@@ -30,20 +30,20 @@ export class MediaForm {
   }
 
   onSubmit() {
-    if (this.mediaForm.invalid) return;
-
-    const formData = this.mediaForm.getRawValue();
-
-    if (this.editingId()) {
-      this.mediaService.updateMedia(this.editingId()!, formData).subscribe(() => {
-        this.mediaService.fetchMedia();
-        this.cancelEdit();
-      });
-    } else {
-      this.mediaService.saveMedia(formData).subscribe(() => {
-        this.mediaService.fetchMedia();
-        this.mediaForm.reset({ mediaType: 'Movie', count: 1 });
-      });
+    if (this.mediaForm.valid) {
+      const formData = this.mediaForm.getRawValue();
+     
+      if (this.editingId()) {
+        this.mediaService.updateMedia(this.editingId()!, formData).subscribe(() => {
+          this.mediaService.fetchMedia();
+          this.cancelEdit();
+        });
+      } else {
+        this.mediaService.saveMedia(formData).subscribe(() => {
+          this.mediaService.fetchMedia();
+          this.mediaForm.reset({ mediaType: 'Movie', count: 1 });
+        });
+      }
     }
   }
 

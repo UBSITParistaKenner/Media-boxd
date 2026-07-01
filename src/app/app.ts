@@ -1,9 +1,10 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { MediaForm } from './media-form/media-form';
+
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [MediaForm],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

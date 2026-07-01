@@ -7,13 +7,13 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+mongoose.connect(process.env.MONGODB_URI);
+
 app.listen(4700, () => {
     console.log('Server is running on port 4700');
 });
 
-mongoose.connect(process.env.MONGODB_URI);
-
-const Media = mongoose.model('watch', new mongoose.Schema({
+const Media = mongoose.model('media', new mongoose.Schema({
     title: String, 
     creator: String,  
     mediaType: String, 
@@ -23,13 +23,13 @@ const Media = mongoose.model('watch', new mongoose.Schema({
 }));
 
 // Create
-app.get('/api/media', async (req, res) => {
+app.post('/api/media', async (req, res) => {
     const list = await Media.find();
     res.send(list);
 });
 
 // Read
-app.post('/api/media', async (req, res) => {
+app.get('/api/media', async (req, res) => {
     const item = new Media(req.body);
     await item.save();
     res.send(item);
