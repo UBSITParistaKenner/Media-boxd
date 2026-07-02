@@ -25,28 +25,33 @@ export class MediaForm {
     notes: ['', Validators.required]
   });
 
-  constructor() {
+  ngOnSubmit() {
     this.mediaService.fetchMedia();
   }
 
   onSubmit() {
+    alert("Button clicked!!!")
+    console.log("Button clicked!");
+    console.log("Form data values:", this.mediaForm.value);
+    console.log("Is form valid?", this.mediaForm.valid);
+  
     if (this.mediaForm.valid) {
-      const formData = this.mediaForm.getRawValue();
-     
       if (this.editingId()) {
-        this.mediaService.updateMedia(this.editingId()!, formData).subscribe(() => {
+        this.mediaService.updateMedia(this.editingId()!, this.mediaForm.getRawValue()).subscribe(() => {
           this.mediaService.fetchMedia();
           this.cancelEdit();
         });
       } else {
-        this.mediaService.saveMedia(formData).subscribe(() => {
+        this.mediaService.saveMedia(this.mediaForm.getRawValue()).subscribe(() => {
           this.mediaService.fetchMedia();
           this.mediaForm.reset({ mediaType: 'Movie', count: 1 });
         });
       }
+    } else {
+      console.log("Form is INVALID. Check which field is empty or misspelled!");
     }
   }
-
+  
   startEdit(item: any) {
     this.editingId.set(item._id);
     this.mediaForm.patchValue({

@@ -25,13 +25,14 @@
         <label>Detailed Review Notes</label>
         <textarea formControlName="notes"></textarea>
   
-        <button type="submit" class="post-btn" [disabled]="!mediaForm.valid">
-          {{ editingId() ? 'UPDATE LOG' : 'POST LOG' }}
+        <button type="button" (click)="onSubmit" class="post-btn">
+          {{ editingId() ? 'UPDATE LOG' : 'POST LOG'}}
         </button>
         
         @if (editingId()) {
           <button type="button" (click)="cancelEdit()" class="cancel-btn">Cancel Edit</button>
         }
+      
       </form>
     </aside>
   
